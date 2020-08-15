@@ -1,0 +1,26 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CC:22:3D:E3:CE:30",
+        "manufacturer": "homebridge.io",
+        "model": "homebridge",
+        "port": 51826,
+        "pin": "031-45-154"
+    },
+    "accessories": [],
+    "platforms": [
+        {
+            "platform": "config",
+            "name": "Config",
+            "port": 8080,
+            "log": {
+                "method": "file",
+                "path": "/var/log/homebridge.log"
+            }
+        },
+        {
+            "name": "Elgato Key Lights",
+            "platform": "ElgatoKeyLights"
+        }
+    ]
+}
