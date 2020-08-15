@@ -1,7 +1,7 @@
 {
   "displayName": "Homebridge Key Lights",
   "name": "homebridge-keylights",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Homebridge plugin for Elgato Key Light and Key Light Air",
   "license": "MIT",
   "repository": {
