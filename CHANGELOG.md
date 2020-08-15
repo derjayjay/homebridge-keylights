@@ -12,6 +12,10 @@ Implemented changing of device settings
 
 Added README.md with basic configuration
 
+<<<<<<< HEAD
 #### [v0.1.0](https://github.com/derjayjay/homebridge-keylights/compare/99da1a3...v0.1.0)
+=======
+#### v0.1.0
+>>>>>>> Added changelog
 
 First implementation
