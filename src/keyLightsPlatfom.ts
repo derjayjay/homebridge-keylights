@@ -19,12 +19,13 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
-    this.log.debug('Finished initializing platform:', this.config.name);
+    this.log.debug('Finished initializing platform');
+    this.log.debug('Configuration:', JSON.stringify(this.config));
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // We can start discovering devices on the network
     this.api.on('didFinishLaunching', () => {
-      log.debug('Executed didFinishLaunching callback');
+      this.log.debug('Executed didFinishLaunching callback');
 
       stw.on('up', (remoteService, _, referrer) => {
         this.log.debug('Discovered accessory:', remoteService.name);
@@ -42,7 +43,7 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
         } else {
           // discovered a new accessory, so a handler must be created
           this.log.info('Discovered accessory on network:', remoteService.name);
-          KeyLightInstance.createInstance(light, this.log)
+          KeyLightInstance.createInstance(light, this.log, this.config.pollingRate)
             .then((instance) => {
               // run the method to register the light as accessories
               this.log.debug('Created device instance for', instance.name);
@@ -73,6 +74,19 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
    * This method handles the creation of the HomeKit accessory from a KeyLightInstance
    */
   configureDevice(light: KeyLightInstance) {
+
+    // update the device settings
+    light.updateSettings({
+      powerOnBehavior: this.config.powerOnBehavior ?? light.settings?.powerOnBehavior ?? 1,
+      powerOnBrightness: this.config.powerOnBrightness ?? light.settings?.powerOnBrightness ?? 20,
+      powerOnTemperature: this.config.powerOnTemperature 
+        ? Math.round(1000000/this.config.powerOnTemperature) 
+        : light.settings?.powerOnTemperature 
+        ?? 213,
+      switchOnDurationMs: this.config.switchOnDurationMs ?? light.settings?.switchOnDurationMs ?? 100,
+      switchOffDurationMs: this.config.switchOffDurationMs ?? light.settings?.switchOffDurationMs ?? 300,
+      colorChangeDurationMs: this.config.colorChangeDurationMs ?? light.settings?.colorChangeDurationMs ?? 100,
+    });
 
     // generate a unique id for the accessory from the serial number
     const uuid = this.api.hap.uuid.generate(light.serialNumber);

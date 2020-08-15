@@ -10,16 +10,27 @@
     "accessories": [],
     "platforms": [
         {
-            "platform": "config",
-            "name": "Config",
+            "name": "WebUI",
             "port": 8080,
+            "auth": "form",
+            "theme": "auto",
+            "tempUnits": "c",
+            "lang": "auto",
             "log": {
                 "method": "file",
                 "path": "/var/log/homebridge.log"
-            }
+            },
+            "platform": "config"
         },
         {
             "name": "Elgato Key Lights",
+            "pollingRate": 1000,
+            "powerOnBehavior": 1,
+            "powerOnBrightness": 20,
+            "powerOnTemperature": 4695,
+            "switchOnDurationMs": 100,
+            "switchOffDurationMs": 300,
+            "colorChangeDurationMs": 100,
             "platform": "ElgatoKeyLights"
         }
     ]

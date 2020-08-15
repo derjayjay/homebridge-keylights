@@ -44,27 +44,27 @@ export interface KeyLightOptions {
 
 
 export class KeyLightInstance {
-  private constructor(keyLight: KeyLight, log: Logger) {
+  private constructor(keyLight: KeyLight, log: Logger, pollingRate: number) {
     this.ip = keyLight.ip;
     this.port = keyLight.port;
     this.name = keyLight.name;
     this.mac = keyLight.mac;
 
     this.log = log;
+    this.pollingRate = pollingRate;
   }
 
   private readonly log: Logger;
+  private readonly pollingRate: number;
 
   private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void = 
   () => {
     true;
   }
 
-  private _pollingRate = 1000;
-
   // Creates a new instance of a key light and pulls all neccessary data from the light
-  public static async createInstance(data: KeyLight, log: Logger): Promise<KeyLightInstance> {
-    const result = new KeyLightInstance(data, log);
+  public static async createInstance(data: KeyLight, log: Logger, pollingRate?: number): Promise<KeyLightInstance> {
+    const result = new KeyLightInstance(data, log, pollingRate ?? 1000);
     try {
       result.info = (await axios.get<KeyLightInfo>(result.infoEndpoint)).data;
       result.options = (await axios.get<KeyLightOptions>(result.lightsEndpoint)).data;
@@ -91,7 +91,11 @@ export class KeyLightInstance {
   }
 
   public get displayName(): string {
-    return this.info?.displayName ?? this.name;
+    if (!this.info?.displayName) {
+      return this.name;
+    } else {
+      return this.info.displayName === '' ? this.name : this.info.displayName;
+    }
   }
 
   public get firmwareVersion(): string {
@@ -122,8 +126,22 @@ export class KeyLightInstance {
     this._onPropertyChanged = callback;
   }
 
-  public set pollingRate(rate: number) {
-    this._pollingRate = rate;
+  public updateSettings(settings: KeyLightSettings) {
+    axios.put<unknown>(this.settingsEndpoint, settings)
+      .then(() => {
+        axios.get<KeyLightSettings>(this.settingsEndpoint)
+          .then((response) => {
+            this.settings = response.data;
+            this.log.debug('Updated device settings of', this.displayName);
+          })
+          .catch(() => {
+            this.log.error('Pulling settings of', this.displayName, 'failed');
+            this.settings = settings;
+          });
+      })
+      .catch(() => {
+        this.log.error('Updating settings of', this.displayName, 'failed');
+      });
   }
 
   public identify() {
@@ -144,7 +162,7 @@ export class KeyLightInstance {
    */
   private pollOptions() {
     setInterval(() => {
-      axios.get<KeyLightOptions>(this.lightsEndpoint, {timeout: this._pollingRate})
+      axios.get<KeyLightOptions>(this.lightsEndpoint, {timeout: this.pollingRate ?? 1000})
         .then(response => {
           if (this.options) {
             const oldLight = this.options.lights[0];
@@ -167,6 +185,6 @@ export class KeyLightInstance {
           this.log.debug('Polling of', this.displayName, 'failed');
           true;
         });
-    }, this._pollingRate);
+    }, this.pollingRate);
   }  
 }

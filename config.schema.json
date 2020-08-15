@@ -9,8 +9,95 @@
         "title": "Name",
         "type": "string",
         "required": true,
-        "default": "Elgato Key Lights"
+        "default": "Elgato Key Lights",
+        "description": "Plugin name as displayed in the homebridge log"
+      },
+      "pollingRate": {
+        "title": "Polling Rate (in milliseconds)",
+        "type": "integer",
+        "required": false,
+        "default": 1000,
+        "description": "The polling rate for light status in milliseconds"
+      },
+      "powerOnBehavior": {
+        "title": "Power On Behaviour",
+        "type": "number",
+        "required": false,
+        "default": 1,
+        "oneOf": [
+          { "title": "Restore last settings used", "enum": [1] },
+          { "title": "Restore default settings", "enum": [2] }
+        ],
+        "description": "The behaviour when powering the lights on"
+      },
+      "powerOnBrightness": {
+        "title": "Default Power On Brightness (in percent)",
+        "type": "integer",
+        "required": false,
+        "default": 20,
+        "minimum": 0,
+        "maximum": 100,
+        "description": "The default brightness setting of the lights"
+      },
+      "powerOnTemperature": {
+        "title": "Default Power On Colour Temperature (in Kelvin)",
+        "type": "integer",
+        "required": false,
+        "default": 4695,
+        "minimum": 2900,
+        "maximum": 7000,
+        "step": 50,
+        "description": "The default colour temperature setting of the lights"
+      },
+      "switchOnDurationMs": {
+        "title": "Switch On Duration (in milliseconds)",
+        "type": "integer",
+        "required": false,
+        "default": 100,
+        "description": "The duration of the switch on sequence"
+
+      },
+      "switchOffDurationMs": {
+        "title": "Switch Off Duration (in milliseconds)",
+        "type": "integer",
+        "required": false,
+        "default": 300,
+        "description": "The duration of the switch off sequence"
+
+      },
+      "colorChangeDurationMs": {
+        "title": "Colour Change Duration (in milliseconds)",
+        "type": "integer",
+        "required": false,
+        "default": 100,
+        "description": "The duration of the colour change sequence"
       }
     }
-  }
+  },
+  "layout": [
+    "name",
+    "pollingRate",
+    {
+			"type": "fieldset",
+      "title": "Durations",
+			"expandable": true,
+			"expanded": false,
+			"items": [
+				"switchOnDurationMs",
+				"switchOffDurationMs",
+				"colorChangeDurationMs"
+			]
+    },
+    {
+			"type": "fieldset",
+      "title": "Power On Behaviour",
+			"expandable": true,
+			"expanded": false,
+			"items": [
+				"powerOnBehavior",
+				"powerOnBrightness",
+				"powerOnTemperature"
+			]
+		}
+  ]
 }
