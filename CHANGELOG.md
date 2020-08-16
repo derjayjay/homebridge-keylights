@@ -1,5 +1,9 @@
 ## Changelog
 
+#### [v1.0.2](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.1...v1.0.2)
+
+Lowered required Node version to maintenance LTS (i.e. Node.js v10)
+
 #### [v1.0.1](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.0...v1.0.1)
 
 Added CHANGELOG.md
@@ -12,10 +16,6 @@ Implemented changing of device settings
 
 Added README.md with basic configuration
 
-<<<<<<< HEAD
 #### [v0.1.0](https://github.com/derjayjay/homebridge-keylights/compare/99da1a3...v0.1.0)
-=======
-#### v0.1.0
->>>>>>> Added changelog
 
 First implementation
