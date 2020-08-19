@@ -1,5 +1,9 @@
 ## Changelog
 
+#### [v1.0.3](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.2...v1.0.3)
+
+Optional settings no longer have a default value (making them non-optional), but use a placeholder
+
 #### [v1.0.2](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.1...v1.0.2)
 
 Lowered required Node version to maintenance LTS (i.e. Node.js v10)
