@@ -16,14 +16,14 @@
         "title": "Polling Rate (in milliseconds)",
         "type": "integer",
         "required": false,
-        "default": 1000,
+        "placeholder": 1000,
         "description": "The polling rate for light status in milliseconds"
       },
       "powerOnBehavior": {
         "title": "Power On Behaviour",
         "type": "number",
         "required": false,
-        "default": 1,
+        "placeholder": 1,
         "oneOf": [
           { "title": "Restore last settings used", "enum": [1] },
           { "title": "Restore default settings", "enum": [2] }
@@ -34,7 +34,7 @@
         "title": "Default Power On Brightness (in percent)",
         "type": "integer",
         "required": false,
-        "default": 20,
+        "placeholder": 20,
         "minimum": 0,
         "maximum": 100,
         "description": "The default brightness setting of the lights"
@@ -43,7 +43,7 @@
         "title": "Default Power On Colour Temperature (in Kelvin)",
         "type": "integer",
         "required": false,
-        "default": 4695,
+        "placeholder": 4695,
         "minimum": 2900,
         "maximum": 7000,
         "step": 50,
@@ -61,7 +61,7 @@
         "title": "Switch Off Duration (in milliseconds)",
         "type": "integer",
         "required": false,
-        "default": 300,
+        "placeholder": 300,
         "description": "The duration of the switch off sequence"
 
       },
@@ -69,7 +69,7 @@
         "title": "Colour Change Duration (in milliseconds)",
         "type": "integer",
         "required": false,
-        "default": 100,
+        "placeholder": 100,
         "description": "The duration of the colour change sequence"
       }
     }

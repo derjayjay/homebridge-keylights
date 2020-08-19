@@ -3,6 +3,8 @@
 
 This is yet another Homebridge plugin for the Elgato Key Light and Key Light Air. It allows you to control your Key Light (Air) with HomeKit while avoiding some of the issues other plugins have.
 
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+
 ## Features
 
 - Switch your Key Lights on and off, set brightness and colour temperature
