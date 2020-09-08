@@ -33,13 +33,13 @@ export class KeyLightsAccessory {
 
     // register handlers for the On/Off Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.On)
-      .on('set', this.setOn.bind(this))         
-      .on('get', this.getOn.bind(this));        
+      .on('set', this.setOn.bind(this))
+      .on('get', this.getOn.bind(this));
 
     // register handlers for the Brightness Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-      .on('set', this.setBrightness.bind(this)) 
-      .on('get', this.getBrightness.bind(this));      
+      .on('set', this.setBrightness.bind(this))
+      .on('get', this.getBrightness.bind(this));
 
     // register handlers for the Color Temperature Characteristic and set the valid value range
     this.service.getCharacteristic(this.platform.Characteristic.ColorTemperature)
@@ -121,7 +121,7 @@ export class KeyLightsAccessory {
     this.platform.log.debug('Updating property', property, 'of device', this.accessory.displayName, 'to', value);
     switch (property) {
       case 'on':
-        this.service.updateCharacteristic(this.platform.Characteristic.On, value);   
+        this.service.updateCharacteristic(this.platform.Characteristic.On, value);
         break;
       case 'temperature':
         this.service.updateCharacteristic(this.platform.Characteristic.ColorTemperature, value);
@@ -139,7 +139,7 @@ export class KeyLightsAccessory {
    * Called from platform handler when the light got a new IP address
    */
   updateConnectionData(data: KeyLight) {
-    this.light.ip = data.ip;
+    this.light.hostname = data.hostname;
     this.light.port = data.port;
   }
 }

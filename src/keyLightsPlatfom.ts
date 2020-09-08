@@ -27,11 +27,11 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
     this.api.on('didFinishLaunching', () => {
       this.log.debug('Executed didFinishLaunching callback');
 
-      stw.on('up', (remoteService, _, referrer) => {
+      stw.on('up', (remoteService) => {
         this.log.debug('Discovered accessory:', remoteService.name);
 
         const light: KeyLight = {
-          ip: referrer.address,
+          hostname: remoteService.hostname,
           port: remoteService.port,
           name: remoteService.name,
           mac: remoteService.txt?.['id'] as string ?? '',
@@ -79,9 +79,9 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
     light.updateSettings({
       powerOnBehavior: this.config.powerOnBehavior ?? light.settings?.powerOnBehavior ?? 1,
       powerOnBrightness: this.config.powerOnBrightness ?? light.settings?.powerOnBrightness ?? 20,
-      powerOnTemperature: this.config.powerOnTemperature 
-        ? Math.round(1000000/this.config.powerOnTemperature) 
-        : light.settings?.powerOnTemperature 
+      powerOnTemperature: this.config.powerOnTemperature
+        ? Math.round(1000000/this.config.powerOnTemperature)
+        : light.settings?.powerOnTemperature
         ?? 213,
       switchOnDurationMs: this.config.switchOnDurationMs ?? light.settings?.switchOnDurationMs ?? 100,
       switchOffDurationMs: this.config.switchOffDurationMs ?? light.settings?.switchOffDurationMs ?? 300,
