@@ -15,7 +15,7 @@ This is yet another Homebridge plugin for the Elgato Key Light and Key Light Air
 ## Installation
 You can install the plugin either using the Homebridge Web UI or using the command line:
 
-    npm install -g homebridge-keylight
+    npm install -g homebridge-keylights
 
 To use the plugin, it must be configured. This is a minimal working configuration:
 
