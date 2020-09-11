@@ -2,7 +2,7 @@ import { Logger } from 'homebridge';
 import axios from 'axios';
 
 export interface KeyLight {
-  ip: string;
+  hostname: string;
   port: number;
   name: string;
   mac: string;
@@ -45,7 +45,7 @@ export interface KeyLightOptions {
 
 export class KeyLightInstance {
   private constructor(keyLight: KeyLight, log: Logger, pollingRate: number) {
-    this.ip = keyLight.ip;
+    this.hostname = keyLight.hostname;
     this.port = keyLight.port;
     this.name = keyLight.name;
     this.mac = keyLight.mac;
@@ -57,7 +57,7 @@ export class KeyLightInstance {
   private readonly log: Logger;
   private readonly pollingRate: number;
 
-  private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void = 
+  private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void =
   () => {
     true;
   }
@@ -103,7 +103,7 @@ export class KeyLightInstance {
   }
 
   public get endpoint(): string {
-    return 'http://' + this.ip + ':' + this.port + '/elgato/';
+    return 'http://' + this.hostname + ':' + this.port + '/elgato/';
   }
 
   public get infoEndpoint(): string {
@@ -167,7 +167,7 @@ export class KeyLightInstance {
           if (this.options) {
             const oldLight = this.options.lights[0];
             const newLight = response.data.lights[0];
-        
+
             if (oldLight.on !== newLight.on) {
               this._onPropertyChanged('on', newLight.on);
             }
@@ -186,5 +186,5 @@ export class KeyLightInstance {
           true;
         });
     }, this.pollingRate);
-  }  
+  }
 }
