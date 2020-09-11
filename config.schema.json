@@ -71,6 +71,12 @@
         "required": false,
         "placeholder": 100,
         "description": "The duration of the colour change sequence"
+      },
+      "useIP": {
+        "title": "Use IP address instead of hostname",
+        "type": "boolean",
+        "required": false,
+        "description": "By default, the hostname of the light is used for the connection. If this causes issues in your environment, you can enable this option to use the IP address instead."
       }
     }
   },
@@ -97,6 +103,15 @@
 				"powerOnBehavior",
 				"powerOnBrightness",
 				"powerOnTemperature"
+			]
+    },
+    {
+			"type": "fieldset",
+      "title": "Advanced",
+			"expandable": true,
+			"expanded": false,
+			"items": [
+				"useIP"
 			]
 		}
   ]

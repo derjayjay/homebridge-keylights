@@ -51,6 +51,7 @@ Further settings are available to configure. This is a complete configuration:
             "switchOnDurationMs": 100,
             "switchOffDurationMs": 300,
             "colorChangeDurationMs": 100,
+            "useIP": false,
             "platform": "ElgatoKeyLights"
         }
       ]
@@ -64,5 +65,6 @@ Further settings are available to configure. This is a complete configuration:
 - `switchOnDurationMs` is the duration of the switch on sequence in milliseconds. Defaults to `100`.
 - `switchOfDurationMs` is the duration of the switch off sequence in milliseconds. Defaults to `300`.
 - `colorChangeDurationMs` is the duration of a colour temperature change in milliseconds. Defaults to `100`.
+- `useIP` enables the usage of IP addresses instead of hostnames to connect to the lights. Defaults to `false`. Should only be turn on if you experience connection issues.
 
 All settings can conveniently configured using the Homebridge Web UI.

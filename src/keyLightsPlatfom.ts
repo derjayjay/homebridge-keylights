@@ -31,7 +31,7 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
         this.log.debug('Discovered accessory:', remoteService.name);
 
         const light: KeyLight = {
-          hostname: remoteService.hostname,
+          hostname: this.config.useIP ? remoteService.addresses[0] : remoteService.hostname,
           port: remoteService.port,
           name: remoteService.name,
           mac: remoteService.txt?.['id'] as string ?? '',
