@@ -1,8 +1,12 @@
 ## Changelog
 
-#### [v1.0.3](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.2...v1.0.3)
+#### [v1.2.0](https://github.com/derjayjay/homebridge-keylights/compare/v1.1.0...v1.2.0)
 
-Optional settings no longer have a default value (making them non-optional), but use a placeholder
+Fixed a bug where the mDNS referrer was used instead of the hostname. Added an option to switch between using the hosting and the IP address of the lights.
+
+#### [v1.1.0](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.2...v1.1.0)
+
+Plugin is now verified by Homebridge. Optional settings no longer have a default value (making them non-optional), but use a placeholder.
 
 #### [v1.0.2](https://github.com/derjayjay/homebridge-keylights/compare/v1.0.1...v1.0.2)
 
