@@ -73,6 +73,6 @@ All settings can conveniently configured using the Homebridge Web UI.
 
 ### Unable to register accessory
 
-Some users [have had an issue](https://github.com/derjayjay/homebridge-keylights/issues/1) where Homebridge was unable to connect to the lights after setting the plugin up. This seems to be a common issue with the lights where they become unresponsive after not being polled for some time. and also happens with the official app Elgato app.
+Some users [have had an issue](https://github.com/derjayjay/homebridge-keylights/issues/1) where Homebridge was unable to connect to the lights after setting the plugin up. This seems to be a common issue where the lights become unresponsive after not being polled for some time, and also happens with the official Elgato app.
 
 As a fix, try power cycling the lights and then restart Homebridge. Usually, the lights are discovered and since the plugin polls the status of the lights regularly, they keep working. In case you are still unable to connect to the lights, try the `useIP` option described in the settings.
