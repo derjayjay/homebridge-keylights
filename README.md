@@ -63,7 +63,7 @@ Further settings are available to configure. This is a complete configuration:
 - `powerOnBrightness` is the default brightness value when powering on in percent. Defaults to `20`. Range is `0` to `100`.
 - `powerOnTemperature` is the default colour temperature when powering on in Kelvin. Defaults to `4695`. Range is `2900` to `7000`.
 - `switchOnDurationMs` is the duration of the switch on sequence in milliseconds. Defaults to `100`.
-- `switchOfDurationMs` is the duration of the switch off sequence in milliseconds. Defaults to `300`.
+- `switchOffDurationMs` is the duration of the switch off sequence in milliseconds. Defaults to `300`.
 - `colorChangeDurationMs` is the duration of a colour temperature change in milliseconds. Defaults to `100`.
 - `useIP` enables the usage of IP addresses instead of hostnames to connect to the lights. Defaults to `false`. Should only be turn on if you experience connection issues.
 
