@@ -23,7 +23,13 @@
     "prepublishOnly": "npm run lint && npm run build"
   },
   "keywords": [
-    "homebridge-plugin"
+    "homebridge-plugin",
+    "elgato",
+    "keylight",
+    "key lights",
+    "key light air",
+    "streaming",
+    "keylight air"
   ],
   "dependencies": {
     "axios": "^0.19.2",

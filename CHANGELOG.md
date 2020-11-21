@@ -1,5 +1,9 @@
 ## Changelog
 
+#### [v1.2.1](https://github.com/derjayjay/homebridge-keylights/compare/v1.2.0...v1.2.1)
+
+Added more keywords
+
 #### [v1.2.0](https://github.com/derjayjay/homebridge-keylights/compare/v1.1.0...v1.2.0)
 
 Fixed a bug where the mDNS referrer was used instead of the hostname. Added an option to switch between using the hosting and the IP address of the lights.
