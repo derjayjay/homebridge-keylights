@@ -1,5 +1,5 @@
 import { Logger } from 'homebridge';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 export interface KeyLight {
   hostname: string;
@@ -9,9 +9,9 @@ export interface KeyLight {
 }
 
 export interface KeyLightInstance extends KeyLight {
-  settings?: KeyLightSettings;
-  info?: KeyLightInfo;
-  options?: KeyLightOptions;
+  settings: KeyLightSettings;
+  info: KeyLightInfo;
+  options: KeyLightOptions;
 }
 
 export interface KeyLightSettings {
@@ -42,6 +42,15 @@ export interface KeyLightOptions {
   }];
 }
 
+export interface LightStripOptions {
+  numberOfLights: number;
+  lights: [{
+      on: number;
+      brightness: number;
+      hue: number;
+      saturation: number;
+  }];
+}
 
 export class KeyLightInstance {
   private constructor(keyLight: KeyLight, log: Logger, pollingRate: number) {
@@ -52,23 +61,33 @@ export class KeyLightInstance {
 
     this.log = log;
     this.pollingRate = pollingRate;
+    
+    this.axiosInstance = axios.create({
+      baseURL: this.endpoint,
+      timeout: pollingRate,
+    });
+  }
+  
+  private async initialize() {
+    this.info = (await this.axiosInstance.get<KeyLightInfo>(KeyLightInstance.infoEndpoint)).data;
+    this.options = (await this.axiosInstance.get<KeyLightOptions>(KeyLightInstance.lightsEndpoint)).data;
+    this.settings = (await this.axiosInstance.get<KeyLightSettings>(KeyLightInstance.settingsEndpoint)).data;
   }
 
   private readonly log: Logger;
   private readonly pollingRate: number;
+  private readonly axiosInstance: AxiosInstance;
 
   private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void =
-  () => {
+  (): void => {
     true;
   }
 
-  // Creates a new instance of a key light and pulls all neccessary data from the light
+  // Creates a new instance of a key light and pulls all necessary data from the light
   public static async createInstance(data: KeyLight, log: Logger, pollingRate?: number): Promise<KeyLightInstance> {
     const result = new KeyLightInstance(data, log, pollingRate ?? 1000);
     try {
-      result.info = (await axios.get<KeyLightInfo>(result.infoEndpoint)).data;
-      result.options = (await axios.get<KeyLightOptions>(result.lightsEndpoint)).data;
-      result.settings = (await axios.get<KeyLightSettings>(result.settingsEndpoint)).data;
+      await result.initialize();
     } catch (error) {
       return Promise.reject();
     }
@@ -106,30 +125,23 @@ export class KeyLightInstance {
     return 'http://' + this.hostname + ':' + this.port + '/elgato/';
   }
 
-  public get infoEndpoint(): string {
-    return this.endpoint + 'accessory-info';
-  }
-
-  public get lightsEndpoint(): string {
-    return this.endpoint + 'lights';
-  }
-
-  public get settingsEndpoint(): string {
-    return this.lightsEndpoint + '/settings';
-  }
-
-  public get identifyEndpoint(): string {
-    return this.endpoint + 'identify';
-  }
+  private static infoEndpoint = 'accessory-info';
+  private static lightsEndpoint = 'lights';
+  private static settingsEndpoint = 'lights/settings';
+  private static identifyEndpoint = 'identify';
+  
+  public static minTemperature = 143;
+  public static maxTemperature = 344;
+  
 
   public set onPropertyChanged(callback: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void) {
     this._onPropertyChanged = callback;
   }
 
   public updateSettings(settings: KeyLightSettings) {
-    axios.put<unknown>(this.settingsEndpoint, settings)
+    this.axiosInstance.put<unknown>(KeyLightInstance.settingsEndpoint, settings)
       .then(() => {
-        axios.get<KeyLightSettings>(this.settingsEndpoint)
+        this.axiosInstance.get<KeyLightSettings>(KeyLightInstance.settingsEndpoint)
           .then((response) => {
             this.settings = response.data;
             this.log.debug('Updated device settings of', this.displayName);
@@ -145,11 +157,11 @@ export class KeyLightInstance {
   }
 
   public identify() {
-    axios.post<unknown>(this.identifyEndpoint);
+    this.axiosInstance.post<unknown>(KeyLightInstance.identifyEndpoint);
   }
 
   public async setProperty(property: ('brightness' | 'on' | 'temperature'), value) {
-    return axios.put<unknown>(this.lightsEndpoint, {'lights': [{[property]: value }]});
+    this.axiosInstance.put<unknown>(KeyLightInstance.lightsEndpoint, {'lights': [{[property]: value }]});
   }
 
   public getProperty(property: ('brightness' | 'on' | 'temperature')) {
@@ -162,7 +174,7 @@ export class KeyLightInstance {
    */
   private pollOptions() {
     setInterval(() => {
-      axios.get<KeyLightOptions>(this.lightsEndpoint, {timeout: this.pollingRate ?? 1000})
+      this.axiosInstance.get<KeyLightOptions>('lights')
         .then(response => {
           if (this.options) {
             const oldLight = this.options.lights[0];

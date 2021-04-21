@@ -1,4 +1,11 @@
-import { Service, PlatformAccessory, CharacteristicValue, CharacteristicSetCallback, CharacteristicGetCallback } from 'homebridge';
+import {
+  Service,
+  PlatformAccessory,
+  CharacteristicValue,
+  CharacteristicSetCallback,
+  CharacteristicGetCallback,
+  AdaptiveLightingController,
+} from 'homebridge';
 
 import { KeyLightsPlatform } from './keyLightsPlatfom';
 import { KeyLightInstance, KeyLight } from './keyLight';
@@ -9,6 +16,7 @@ import { KeyLightInstance, KeyLight } from './keyLight';
  */
 export class KeyLightsAccessory {
   private service: Service;
+  private adaptiveLightingController ? : AdaptiveLightingController;
 
   constructor(
     private readonly platform: KeyLightsPlatform,
@@ -17,7 +25,7 @@ export class KeyLightsAccessory {
   ) {
 
     // set accessory information
-    this.accessory.getService(this.platform.Service.AccessoryInformation)!
+    this.accessory.getService(this.platform.Service.AccessoryInformation) !
       .setCharacteristic(this.platform.Characteristic.Manufacturer, this.light.manufacturer)
       .setCharacteristic(this.platform.Characteristic.Model, this.light.model)
       .setCharacteristic(this.platform.Characteristic.SerialNumber, this.light.serialNumber)
@@ -44,8 +52,17 @@ export class KeyLightsAccessory {
     // register handlers for the Color Temperature Characteristic and set the valid value range
     this.service.getCharacteristic(this.platform.Characteristic.ColorTemperature)
       .on('set', this.setColorTemperature.bind(this))
-      .on('get', this.getColorTemperature.bind(this));
-    this.service.getCharacteristic(this.platform.Characteristic.ColorTemperature)['valid-values-range'] = [143, 344];
+      .on('get', this.getColorTemperature.bind(this))
+      .setProps({
+        minValue: KeyLightInstance.minTemperature,
+        maxValue: KeyLightInstance.maxTemperature,
+      });
+
+    // adaptive lighting
+    if (platform.api.versionGreaterOrEqual && platform.api.versionGreaterOrEqual('1.3.0')) {
+      this.adaptiveLightingController = new platform.api.hap.AdaptiveLightingController(this.service);
+      this.accessory.configureController(this.adaptiveLightingController);
+    }
 
     // register handler for Identify functionality
     this.accessory.on('identify', (() => {
@@ -97,7 +114,13 @@ export class KeyLightsAccessory {
    * Handlers for the Color Temperature Characteristic
    */
   setColorTemperature(value: CharacteristicValue, callback: CharacteristicSetCallback) {
-    this.light.setProperty('temperature', value)
+    const temperature = value < KeyLightInstance.minTemperature ?
+      KeyLightInstance.minTemperature :
+      value > KeyLightInstance.maxTemperature ?
+        KeyLightInstance.maxTemperature :
+        value;
+
+    this.light.setProperty('temperature', temperature)
       .then(() => {
         this.platform.log.debug('Set Characteristic Color Temperature ->', value, 'successfully on', this.accessory.displayName);
         callback(null);
