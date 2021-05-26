@@ -1,7 +1,7 @@
 
 # Homebridge Key Lights
 
-This is yet another Homebridge plugin for the Elgato Key Light and Key Light Air. It allows you to control your Key Light (Air) with HomeKit while avoiding some of the issues other plugins have.
+This is yet another Homebridge plugin for the Elgato Key Light, Key Light Air and Ring Light. It allows you to control your Elgato lights with HomeKit while avoiding some of the issues other plugins have.
 
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
