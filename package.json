@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "axios": "^0.21.1",
-    "spread-the-word": "^0.8.4"
+    "spread-the-word": "^0.9.3"
   },
   "devDependencies": {
     "@types/node": "^14.14.14",
