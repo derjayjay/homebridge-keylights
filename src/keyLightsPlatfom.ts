@@ -27,7 +27,7 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
     this.api.on('didFinishLaunching', () => {
       this.log.debug('Executed didFinishLaunching callback');
 
-      bonjour().find({type: 'elg'}, (remoteService) => {
+      bonjour().find({ type: 'elg' }, (remoteService) => {
         this.log.debug('Discovered accessory:', remoteService.name);
 
         const light: KeyLight = {
