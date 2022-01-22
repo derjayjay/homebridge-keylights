@@ -33,9 +33,10 @@
   ],
   "dependencies": {
     "axios": "^0.21.1",
-    "spread-the-word": "^0.9.3"
+    "bonjour": "^3.5.0"
   },
   "devDependencies": {
+    "@types/bonjour": "^3.5.10",
     "@types/node": "^16.11.10",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
