@@ -1,5 +1,13 @@
 ## Changelog
 
+#### [v1.2.4](https://github.com/derjayjay/homebridge-keylights/compare/v1.2.3...v1.2.4)
+
+Bumped some package versions
+
+#### [v1.2.3](https://github.com/derjayjay/homebridge-keylights/compare/v1.2.3...v1.2.2)
+
+Bumped some package versions
+
 #### [v1.2.2](https://github.com/derjayjay/homebridge-keylights/compare/v1.2.1...v1.2.2)
 
 Bumped some package versions
