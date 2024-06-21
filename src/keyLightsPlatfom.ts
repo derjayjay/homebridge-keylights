@@ -29,17 +29,9 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
 
       (new Bonjour()).find({ type: 'elg' }, (remoteService: BonjourService) => {
         this.log.debug('Discovered accessory:', remoteService.name);
-
-        var hostname: string;
-        if (remoteService.addresses !== undefined) {
-          hostname = this.config.useIP 
-            ? remoteService.addresses[0]
-            : remoteService.host;
-        } else {
-          hostname = remoteService.host;
-        }
+        
         const light: KeyLight = {
-          hostname: hostname,
+          hostname: this.getHostnameForLight(remoteService),
           port: remoteService.port,
           name: remoteService.name,
           mac: remoteService.txt?.['id'] as string ?? '',
@@ -87,7 +79,7 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
       powerOnBehavior: this.config.powerOnBehavior ?? light.settings?.powerOnBehavior ?? 1,
       powerOnBrightness: this.config.powerOnBrightness ?? light.settings?.powerOnBrightness ?? 20,
       powerOnTemperature: this.config.powerOnTemperature
-        ? Math.round(1000000/this.config.powerOnTemperature)
+        ? Math.round(1000000 / this.config.powerOnTemperature)
         : light.settings?.powerOnTemperature
         ?? 213,
       switchOnDurationMs: this.config.switchOnDurationMs ?? light.settings?.switchOnDurationMs ?? 100,
@@ -129,6 +121,19 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
 
       // link the accessory to your platform
       this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+    }
+  }
+
+  /**
+   * This method fetches the hostname or IP address to use from the found service
+   */
+  private getHostnameForLight(remoteService: BonjourService): string {
+    if (remoteService.addresses !== undefined) {
+      return this.config.useIP 
+        ? remoteService.addresses[0]
+        : remoteService.host;
+    } else {
+      return remoteService.host;
     }
   }
 }

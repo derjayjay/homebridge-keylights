@@ -8,6 +8,8 @@ export interface KeyLight {
   mac: string;
 }
 
+// @todo improve this in future rewrite
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface KeyLightInstance extends KeyLight {
   settings?: KeyLightSettings;
   info?: KeyLightInfo;
@@ -42,7 +44,8 @@ export interface KeyLightOptions {
   }];
 }
 
-
+// @todo improve this in future rewrite
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class KeyLightInstance {
   private constructor(keyLight: KeyLight, log: Logger, pollingRate: number) {
     this.hostname = keyLight.hostname;
@@ -58,9 +61,9 @@ export class KeyLightInstance {
   private readonly pollingRate: number;
 
   private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void =
-  () => {
-    true;
-  }
+    () => {
+      true;
+    };
 
   // Creates a new instance of a key light and pulls all neccessary data from the light
   public static async createInstance(data: KeyLight, log: Logger, pollingRate?: number): Promise<KeyLightInstance> {
