@@ -1,5 +1,5 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
-import stw from 'spread-the-word';
+import { Bonjour, Service as BonjourService } from 'bonjour-service';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { KeyLightsAccessory } from './keyLightsAccessory';
@@ -27,11 +27,19 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
     this.api.on('didFinishLaunching', () => {
       this.log.debug('Executed didFinishLaunching callback');
 
-      stw.on('up', (remoteService) => {
+      (new Bonjour()).find({ type: 'elg' }, (remoteService: BonjourService) => {
         this.log.debug('Discovered accessory:', remoteService.name);
 
+        var hostname: string;
+        if (remoteService.addresses !== undefined) {
+          hostname = this.config.useIP 
+            ? remoteService.addresses[0]
+            : remoteService.host;
+        } else {
+          hostname = remoteService.host;
+        }
         const light: KeyLight = {
-          hostname: this.config.useIP ? remoteService.addresses[0] : remoteService.hostname,
+          hostname: hostname,
           port: remoteService.port,
           name: remoteService.name,
           mac: remoteService.txt?.['id'] as string ?? '',
@@ -55,7 +63,6 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
             });
         }
       });
-      stw.listen({ type: 'elg' });
     });
   }
 
