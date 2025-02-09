@@ -34,7 +34,7 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
           hostname: this.getHostnameForLight(remoteService),
           port: remoteService.port,
           name: remoteService.name,
-          mac: remoteService.txt?.['id'] as string ?? '',
+          mac: remoteService.txt?.id as string ?? '',
         };
         if (this.lights.has(light.mac)) {
           // there already is a platform handler active for this KeyLight, so just update the connection data

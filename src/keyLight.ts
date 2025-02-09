@@ -60,10 +60,7 @@ export class KeyLightInstance {
   private readonly log: Logger;
   private readonly pollingRate: number;
 
-  private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void =
-    () => {
-      true;
-    };
+  private _onPropertyChanged: (arg1: ('brightness' | 'on' | 'temperature'), arg2: number) => void = () => true;
 
   // Creates a new instance of a key light and pulls all neccessary data from the light
   public static async createInstance(data: KeyLight, log: Logger, pollingRate?: number): Promise<KeyLightInstance> {
@@ -152,7 +149,7 @@ export class KeyLightInstance {
   }
 
   public async setProperty(property: ('brightness' | 'on' | 'temperature'), value) {
-    return axios.put<unknown>(this.lightsEndpoint, {'lights': [{[property]: value }]});
+    return axios.put<unknown>(this.lightsEndpoint, { 'lights': [{ [property]: value }] });
   }
 
   public getProperty(property: ('brightness' | 'on' | 'temperature')) {
@@ -165,7 +162,7 @@ export class KeyLightInstance {
    */
   private pollOptions() {
     setInterval(() => {
-      axios.get<KeyLightOptions>(this.lightsEndpoint, {timeout: this.pollingRate ?? 1000})
+      axios.get<KeyLightOptions>(this.lightsEndpoint, { timeout: this.pollingRate ?? 1000 })
         .then(response => {
           if (this.options) {
             const oldLight = this.options.lights[0];
@@ -186,7 +183,6 @@ export class KeyLightInstance {
         .catch(() => {
           // we'll retry again
           this.log.debug('Polling of', this.displayName, 'failed');
-          true;
         });
     }, this.pollingRate);
   }

@@ -120,17 +120,17 @@ export class KeyLightsAccessory {
   onPropertyChanged(property: ('brightness' | 'on' | 'temperature'), value: number) {
     this.platform.log.debug('Updating property', property, 'of device', this.accessory.displayName, 'to', value);
     switch (property) {
-      case 'on':
-        this.service.updateCharacteristic(this.platform.Characteristic.On, value);
-        break;
-      case 'temperature':
-        this.service.updateCharacteristic(this.platform.Characteristic.ColorTemperature, value);
-        break;
-      case 'brightness':
-        this.service.updateCharacteristic(this.platform.Characteristic.Brightness, value);
-        break;
-      default:
-        break;
+    case 'on':
+      this.service.updateCharacteristic(this.platform.Characteristic.On, value);
+      break;
+    case 'temperature':
+      this.service.updateCharacteristic(this.platform.Characteristic.ColorTemperature, value);
+      break;
+    case 'brightness':
+      this.service.updateCharacteristic(this.platform.Characteristic.Brightness, value);
+      break;
+    default:
+      break;
     }
   }
 
