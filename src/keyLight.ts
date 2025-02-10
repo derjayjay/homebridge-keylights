@@ -1,4 +1,4 @@
-import { Logger } from 'homebridge';
+import { CharacteristicValue, Logger } from 'homebridge';
 import axios from 'axios';
 
 export interface KeyLight {
@@ -148,7 +148,7 @@ export class KeyLightInstance {
     axios.post<unknown>(this.identifyEndpoint);
   }
 
-  public async setProperty(property: ('brightness' | 'on' | 'temperature'), value) {
+  public async setProperty(property: ('brightness' | 'on' | 'temperature'), value: CharacteristicValue) {
     return axios.put<unknown>(this.lightsEndpoint, { 'lights': [{ [property]: value }] });
   }
 

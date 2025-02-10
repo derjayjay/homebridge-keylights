@@ -1,13 +1,13 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 import { Bonjour, Service as BonjourService } from 'bonjour-service';
 
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { KeyLightsAccessory } from './keyLightsAccessory';
-import { KeyLight, KeyLightInstance } from './keyLight';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
+import { KeyLightsAccessory } from './keyLightsAccessory.js';
+import { KeyLight, KeyLightInstance } from './keyLight.js';
 
 export class KeyLightsPlatform implements DynamicPlatformPlugin {
-  public readonly Service: typeof Service = this.api.hap.Service;
-  public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
+  public readonly Service: typeof Service;
+  public readonly Characteristic: typeof Characteristic;
 
   // this is used to track restored cached accessories
   public readonly accessories: PlatformAccessory[] = [];
@@ -19,6 +19,9 @@ export class KeyLightsPlatform implements DynamicPlatformPlugin {
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
+    this.Service = this.api.hap.Service;
+    this.Characteristic = this.api.hap.Characteristic;  
+
     this.log.debug('Finished initializing platform');
     this.log.debug('Configuration:', JSON.stringify(this.config));
 

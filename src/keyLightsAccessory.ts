@@ -1,7 +1,7 @@
 import { Service, PlatformAccessory, CharacteristicValue, CharacteristicSetCallback, CharacteristicGetCallback } from 'homebridge';
 
-import { KeyLightsPlatform } from './keyLightsPlatfom';
-import { KeyLightInstance, KeyLight } from './keyLight';
+import { KeyLightsPlatform } from './keyLightsPlatfom.js';
+import { KeyLightInstance, KeyLight } from './keyLight.js';
 
 /**
  * Platform Accessory for the Key Light
@@ -44,8 +44,11 @@ export class KeyLightsAccessory {
     // register handlers for the Color Temperature Characteristic and set the valid value range
     this.service.getCharacteristic(this.platform.Characteristic.ColorTemperature)
       .on('set', this.setColorTemperature.bind(this))
-      .on('get', this.getColorTemperature.bind(this));
-    this.service.getCharacteristic(this.platform.Characteristic.ColorTemperature)['valid-values-range'] = [143, 344];
+      .on('get', this.getColorTemperature.bind(this))
+      .setProps({
+        minValue: 143,
+        maxValue: 344,
+      });
 
     // register handler for Identify functionality
     this.accessory.on('identify', (() => {
