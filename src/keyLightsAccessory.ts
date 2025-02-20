@@ -46,8 +46,7 @@ export class KeyLightsAccessory {
       .on('set', this.setColorTemperature.bind(this))
       .on('get', this.getColorTemperature.bind(this))
       .setProps({
-        minValue: 143,
-        maxValue: 344,
+        validValueRanges: [143, 344],
       });
 
     // register handler for Identify functionality
