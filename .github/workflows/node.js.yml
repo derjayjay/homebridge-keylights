@@ -1,29 +1,37 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+name: Build and Lint
 
-name: Node.js CI
-
-on:
-  push:
-    branches: [ master, main ]
-  pull_request:
-    branches: [ master, main ]
+on: [push, pull_request]
 
 jobs:
   build:
-    name: Build & Lint
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         node-version: [18.x, 20.x, 22.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run build
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint the project
+        run: npm run lint
+
+      - name: Build the project
+        run: npm run build
+
+      - name: List, audit, fix outdated dependencies and build again
+        run: |
+          npm list --outdated
+          npm audit || true  # ignore failures
+          npm audit fix || true
+          npm list --outdated
+          npm run build
